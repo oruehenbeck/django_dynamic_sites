@@ -3,11 +3,12 @@
 from django.contrib import admin
 from django.utils.text import slugify
 from django.contrib.contenttypes.models import ContentType
+from django.utils.translation import pgettext_lazy
 
 from sitetree.models import Tree
 from sitetree.admin import TreeItemAdmin, TreeItemForm, override_item_admin
 
-from django.utils.translation import pgettext_lazy as _
+from modeltranslation.admin import TranslationAdmin
 
 from .models import Template, Site
 from .signals import get_transferable_models
@@ -20,7 +21,7 @@ class SiteAdminForm(TreeItemForm):
 
     def __init__(self, *args, **kwargs):
         transferable_models = []
-        get_transferable_models.send(sender='sites', qry=transferable_models)
+        get_transferable_models.send(sender='dynamic_sites', qry=transferable_models)
         qs_transferable_models = ContentType.objects.none()
         for qs in transferable_models:
             qs_transferable_models = qs_transferable_models | qs
@@ -85,23 +86,23 @@ class SiteAdminForm(TreeItemForm):
             self.instance.tree = Tree.objects.first()
 
 
-class SiteAdmin(TreeItemAdmin):
+class SiteAdmin(TreeItemAdmin, TranslationAdmin):
     form = SiteAdminForm
 
     readonly_fields = ['slug', 'url', 'tree']
     exclude = ('sort_order',)
     fieldsets = (
-        (_('Admin page Basic settings', 'SitesSiteAdmin_0'), {
-            'fields': ('parent', 'title', 'template', 'bg_pic', 'transfer_model', 'tree', 'slug', 'url',)
+        (pgettext_lazy('Admin page Basic settings', 'DynamicSitesSiteAdmin_0'), {
+            'fields': ('parent', 'title', 'display_title', 'title_text', 'template', 'bg_pic', 'transfer_model', 'tree', 'slug', 'url',)
         }),
-        (_('Admin page Access settings', 'SitesSiteAdmin_1'), {
+        (pgettext_lazy('Admin page Access settings', 'DynamicSitesSiteAdmin_1'), {
             'fields': ('access_loggedin', 'access_guest', 'access_restricted', 'access_permissions', 'access_perm_type')
         }),
-        (_('Admin page Display settings', 'SitesSiteAdmin_2'), {
+        (pgettext_lazy('Admin page Display settings', 'DynamicSitesSiteAdmin_2'), {
             'classes': ('collapse',),
             'fields': ('hidden', 'inmenu', 'inbreadcrumbs', 'insitetree')
         }),
-        (_('Admin page Additional settings', 'SitesSiteAdmin_3'), {
+        (pgettext_lazy('Admin page Additional settings', 'DynamicSitesSiteAdmin_3'), {
             'classes': ('collapse',),
             'fields': ('hint', 'description', 'alias', 'urlaspattern')
         }),
