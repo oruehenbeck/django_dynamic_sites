@@ -1,0 +1,70 @@
+# This file exists so you can easily regenerate your project.
+#
+# `cookiepatcher` is a convenient shim around `cookiecutter`
+# for regenerating projects (it will generate a .cookiecutterrc
+# automatically for any template). To use it:
+#
+#    pip install cookiepatcher
+#    cookiepatcher gh:ionelmc/cookiecutter-pylibrary django_dynamic_sites
+#
+# See:
+#    https://pypi.org/project/cookiepatcher
+#
+# Alternatively, you can run:
+#
+#    cookiecutter --overwrite-if-exists --config-file=django_dynamic_sites/.cookiecutterrc gh:ionelmc/cookiecutter-pylibrary
+
+default_context:
+
+    _extensions:               ['jinja2_time.TimeExtension']
+    _template:                 'gh:ionelmc/cookiecutter-pylibrary'
+    allow_tests_inside_package: 'no'
+    appveyor:                  'no'
+    c_extension_function:      'longest'
+    c_extension_module:        '_dynamic_sites'
+    c_extension_optional:      'no'
+    c_extension_support:       'no'
+    c_extension_test_pypi:     'no'
+    c_extension_test_pypi_username: 'oruehenbeck'
+    codacy:                    'no'
+    codacy_projectid:          '[Get ID from https://app.codacy.com/app/oruehenbeck/django_dynamic_sites/settings]'
+    codeclimate:               'no'
+    codecov:                   'no'
+    command_line_interface:    'no'
+    command_line_interface_bin_name: 'django_dynamic_sites'
+    coveralls:                 'no'
+    coveralls_token:           '[Required for Appveyor, take it from https://coveralls.io/github/oruehenbeck/django_dynamic_sites]'
+    distribution_name:         'django_dynamic_sites'
+    email:                     'jmueller@bona-fide.it'
+    full_name:                 'Jan Müller'
+    legacy_python:             'no'
+    license:                   'MIT license'
+    linter:                    'flake8'
+    package_name:              'dynamic_sites'
+    pre_commit:                'no'
+    project_name:              'dynamic_sites'
+    project_short_description: 'A django applicaation, which impleents a flexible and generic viewsystem providing a convinient way to handle staticpages, model based pages and much more.'
+    pypi_badge:                'yes'
+    pypi_disable_upload:       'no'
+    release_date:              'today'
+    repo_hosting:              'github.com'
+    repo_hosting_domain:       'https://github.com/oruehenbeck/django_dynamic_sites'
+    repo_name:                 'django_dynamic_sites'
+    repo_username:             'oruehenbeck'
+    requiresio:                'no'
+    scrutinizer:               'no'
+    setup_py_uses_setuptools_scm: 'no'
+    setup_py_uses_test_runner: 'no'
+    sphinx_docs:               'yes'
+    sphinx_docs_hosting:       'https://django-dynamic-sites.readthedocs.io/'
+    sphinx_doctest:            'yes'
+    sphinx_theme:              'sphinx-rtd-theme'
+    test_matrix_configurator:  'no'
+    test_matrix_separate_coverage: 'no'
+    test_runner:               'pytest'
+    travis:                    'no'
+    travis_osx:                'no'
+    version:                   '1.0.0'
+    website:                   'https://blog.ionelmc.ro'
+    year_from:                 '2021'
+    year_to:                   '2021'
