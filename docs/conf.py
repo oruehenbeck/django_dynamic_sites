@@ -25,8 +25,8 @@ version = release = '1.0.0'
 pygments_style = 'trac'
 templates_path = ['.']
 extlinks = {
-    'issue': ('https://https://github.com/oruehenbeck/django_dynamic_sites/oruehenbeck/django_dynamic_sites/issues/%s', '#'),
-    'pr': ('https://https://github.com/oruehenbeck/django_dynamic_sites/oruehenbeck/django_dynamic_sites/pull/%s', 'PR #'),
+    'issue': ('https://github.com/oruehenbeck/django_dynamic_sites/issues/%s', '#'),
+    'pr': ('https://github.com/oruehenbeck/django_dynamic_sites/pull/%s', 'PR #'),
 }
 # on_rtd is whether we are on readthedocs.org
 on_rtd = os.environ.get('READTHEDOCS', None) == 'True'

@@ -37,7 +37,7 @@ Development
 
 To set up `django_dynamic_sites` for local development:
 
-1. Fork `django_dynamic_sites <https://https://github.com/oruehenbeck/django_dynamic_sites/>`_
+1. Fork `django_dynamic_sites <https://github.com/oruehenbeck/django_dynamic_sites/>`_
    (look for the "Fork" button).
 2. Clone your fork locally::
 
