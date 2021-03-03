@@ -71,9 +71,9 @@ setup(
     ],
     python_requires='>=3.6',
     install_requires=[
-        'django-sitetree==1.16.0',
-        'django-modeltranslation==0.16.1'
-        'django-bleach==0.6.1'
+        #'django-sitetree==1.16.0',
+        #'django-modeltranslation==0.16.1'
+        #'django-bleach==0.6.1'
         # eg: 'aspectlib==1.1.1', 'six>=1.7',
     ],
     extras_require={
