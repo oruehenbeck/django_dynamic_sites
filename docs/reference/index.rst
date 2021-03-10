@@ -5,3 +5,4 @@ Reference
     :glob:
 
     dynamic_sites*
+    contentview*

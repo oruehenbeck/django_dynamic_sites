@@ -8,11 +8,15 @@ staticpages, model based pages and much more.
 SO big question: What exactly does it for you?
 
 TLDR:
+=====
+
 dynamic_sites in its core is a combination of a site model representing each page
 and a set of generic views which in conjunction django-sitetree create a powerful
 and yet simple system to create and manage static pages and model dependend pages.
 
 Long Answer:
+============
+
 The core of the app is twofold.
 On the one side you have the site model of which the instances represent each page
 on your website. For each instance you can specify where in your sitetree it is placed
@@ -45,9 +49,9 @@ The full Documentation can be found here_
 Needed Dependencies
 ===================
 
-The package is based on the django-sitetree_ package which handles the tree structure, access permissions and menu generation.
-For the translation capabilities django-modeltranslation_ is used.
-django-bleach_ is used for cleaning textfields.
+| The package is based on the django-sitetree_ package which handles the tree structure, access permissions and menu generation.
+| For the translation capabilities django-modeltranslation_ is used.
+| django-bleach_ is used for cleaning textfields.
 
 .. _django-sitetree: https://pypi.org/project/django-sitetree/
 .. _django-modeltranlation: https://pypi.org/project/django-modeltranslation/

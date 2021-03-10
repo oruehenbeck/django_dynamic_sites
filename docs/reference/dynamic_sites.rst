@@ -1,5 +1,5 @@
-dynamic_sites
-=============
+ContentView
+===========
 
 .. testsetup::
 

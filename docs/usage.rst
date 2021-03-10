@@ -16,7 +16,7 @@ Add a template
 - in the admin menu
 - go to Dynamic_Sites/Templates
 
-Templates need a name for your own convenients and a path. The path has to have
+Templates need a name for your own convenience and a path. The path has to have
 the same format as if you would specify a template_name in a view.
 
 
@@ -50,13 +50,15 @@ you add more pages to your website. More on that later.
 In the editor you can now specify your new page, we will go through the options
 one by one.
 
-- *parent*: Select under which page you want to hook your new page. Leaving it
-	empty means the page is in the toplayer. Editor, download and delete pages have
-	to be hooked below another page having the same transfer_model.
+- *parent*:
+	Select under which page you want to hook your new page. Leaving it empty means
+	the page is in the to player. Editor, download and delete pages have to be
+	hooked below another page having the same transfer_model.
 
-- *title*: The title is the logical name of the page, it will be its slug and it
-	used to give the page special capabilities. Details to the Views are found in
-	the respective chapters. All of specialized views need a transfer_model.
+- *title*:
+	The title is the logical name of the page, it will be its slug and it used to
+	give the page special capabilities. Details to the Views are found in the
+	respective chapters. All of specialized views need a transfer_model.
 
 	- Title contains 'form': This page will be a ContentFormView.
 	- Title == 'Editor': This page will be a ContentEditView.
@@ -65,19 +67,23 @@ one by one.
 	- Everything else will be a normal ContentView.
 
 
-- *display_title*: For each language you specified in your settings, set the name
-	which it will be displayed as in the menus.
+- *display_title*:
+	For each language you specified in your settings, set the name which it will
+	be displayed as in the menus.
 
-- *title_text*: For each language you specified in your settings, set a short
-	description of the page, will be available in the context.
+- *title_text*:
+	For each language you specified in your settings, set a short description of
+	the page, will be available in the context.
 
-- *template*: The template in which the context will be rendered in.
+- *template*:
+	The template in which the context will be rendered in.
 
-- *bg_pic*: Here you can add a picture, if the chosen template supports a
-	background picture otherwise it will be ignored.
+- *bg_pic*:
+	Here you can add a picture, if the chosen template supports a background picture
+	otherwise it will be ignored. Will be added to the context as bg_pic.
 
-- *transfer_model*: The juicy part of this project. Here you can select which of
-	your registered models should be handled by the page.
+- *transfer_model*:
+	The juicy part of this project. Here you can select which of your registered
+	models should be handled by the page.
 
-The rest of the options are supplied by the django-sitetree app and are explained
-in its documentation.
+The rest of the options are supplied by the django-sitetree app and are explained in its documentation.
