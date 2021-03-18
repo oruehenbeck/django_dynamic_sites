@@ -23,7 +23,7 @@ def read(*names, **kwargs):
 
 setup(
     name='django_dynamic_sites',
-    version='1.0.0',
+    version='1.0.1',
     license='MIT',
     description='A django application, which implements a flexible and generic viewsystem providing a convenient way to handle staticpages, model based pages and much more.',
     long_description='%s\n%s' % (
