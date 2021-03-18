@@ -11,8 +11,8 @@ TLDR:
 =====
 
 dynamic_sites in its core is a combination of a site model representing each page
-and a set of generic views which in conjunction django-sitetree create a powerful
-and yet simple system to create and manage static pages and model dependend pages.
+and a set of generic views which in conjunction with django-sitetree create a powerful
+and yet simple system to create and manage static pages and model dependent/displaying pages.
 
 Long Answer:
 ============
@@ -31,8 +31,8 @@ Now to the second part. How does all this fancy stuff work so easy.
 The core functionality comes from a small number of generic views. Detailed description
 of each view are found in the respective chapter. These views serve the not only
 the site object you accessed via the url, but also serve the specified model and
-the necessary templates to handle it. Depending on the title you gave the side on its creation
-it can also handle creation, editing, print-to-pdf, or deleting of the given model.
+the necessary templates to handle it. Depending on the title you gave the site on its creation
+it can also handle creation, editing, print-to-pdf, or deletion of objects from the given model.
 
 The core point is here you have a ton of basic functionality for each of your custom
 models independent of which fields, capabilities or complexity it has. In addition
@@ -44,6 +44,7 @@ The full Documentation can be found here_
 .. _here: https://django-dynamic-sites.readthedocs.io/
 
 * Free software: MIT license
+
 
 
 Needed Dependencies

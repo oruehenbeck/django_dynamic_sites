@@ -45,7 +45,7 @@ Creating a new page
 
 Now you can create a new site. On the page before you saw a list of items with one
 item named 'Defaultpage'. Thats where you can see you sitetree developing when
-you add more pages to your website. More on that later.
+you add more pages to your website.
 
 In the editor you can now specify your new page, we will go through the options
 one by one.

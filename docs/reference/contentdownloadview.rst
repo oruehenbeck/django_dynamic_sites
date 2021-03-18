@@ -34,40 +34,6 @@ the following::
 Functions
 =========
 
-===============
-ContentEditView
-===============
-
-This views focus is on extending the UpdateView to the scope the app is working
-on. So as long as you supply the necessary templates and create an page called Editor
-as a child node to a normal ContentView with a the same transfer_model on both of them.
-You will automatically have an page which will handle creating and updating objects
-of this type with all permission capabilities supplied by django-sitetree.
-
-The view also allows you to write a custom form validation on a per model basis.
-To make use of this feature simply add a :code:`validate` function to your model::
-
-  def validate(self, *args, **kwargs):
-    # in here you have access to
-    # the request -> kwargs['request']
-    # the form -> kwargs['form']
-    # and the error dict -> kwargs['errors']
-
-DO NOT raise errors in this function!! instead use::
-
-  kwargs['form'].add_error(field, ValidationError(msg_string, code=type_string))
-
-This version of error handling should be preferred as it not only allows for finding
-all validation errors at the same time, but it also will return the form to the user
-with the errors. Then you can highlight incorrect fields and display your error messages
-to the user.
-| For a more detailed info on how to use custom validation take a look into the DjangoWiki_
-
-.. _DjangoWiki: https://docs.djangoproject.com/en/dev/ref/forms/validation/
-
-Functions
-=========
-
 **dispatch() & get_permission_required()**
   See ContentView. Did not change.
 
