@@ -100,7 +100,7 @@ Functions
   | \[WIP\] to main things that need a better solution. One is the cookie detection
     and the other is the file handling.
 
-**forms_valid()**
+**forms_valid(self, forms)**
   This function checks if the special_form_valid has been implemented and if not
   raises a NotImplementedError. Regularly it just calls special_form_valid and then
   redirects to the success_url.

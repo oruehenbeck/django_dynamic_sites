@@ -4,14 +4,14 @@ ContentEditView
 
 This views focus is on extending the UpdateView to the scope the app is working
 on. So as long as you supply the necessary templates and create an page called Editor
-underneath a normal ContentView with a the same transfer_model on both of them.
+as a child node to a normal ContentView with a the same transfer_model on both of them.
 You will automatically have an page which will handle creating and updating objects
 of this type with all permission capabilities supplied by django-sitetree.
 
 The view also allows you to write a custom form validation on a per model basis.
 To make use of this feature simply add a :code:`validate` function to your model::
 
-  def validate(self, \*args, \*\*kwargs):
+  def validate(self, *args, **kwargs):
     # in here you have access to
     # the request -> kwargs['request']
     # the form -> kwargs['form']
@@ -63,7 +63,7 @@ Functions
 
 **get_context_data(self, \*\*kwargs)**
   The context is only extended by the default values listed with the ContentView.
-  All functionality can be used from the UpdateView.
+  All functionality from the UpdateView can be used.
 
 **post(self, request, \*args, \*\*kwargs)**
   This function sets self.object to the edited object if in *(UPDATE-STATE)* otherwise

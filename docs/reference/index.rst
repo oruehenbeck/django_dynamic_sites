@@ -7,3 +7,5 @@ Reference
     contentview*
     contentformview*
     contenteditview*
+    contentdeleteview*
+    contentdownloadview*
