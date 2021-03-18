@@ -6,3 +6,4 @@ Reference
 
     contentview*
     contentformview*
+    contenteditview*

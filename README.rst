@@ -54,7 +54,7 @@ Needed Dependencies
 | django-bleach_ is used for cleaning textfields.
 
 .. _django-sitetree: https://pypi.org/project/django-sitetree/
-.. _django-modeltranlation: https://pypi.org/project/django-modeltranslation/
+.. _django-modeltranslation: https://pypi.org/project/django-modeltranslation/
 .. _django-bleach: https://pypi.org/project/django-bleach/
 
 Optional Dependencies

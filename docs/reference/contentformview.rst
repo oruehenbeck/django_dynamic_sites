@@ -15,7 +15,7 @@ the three following classmethods on the model.
       {
         Customform1: [],
         'app_label/model': ['field1', 'field3', 'field4'],
-        'Customform3': [],
+        Customform3: [],
         'app_label/model': ['field2', 'field4', 'field5'],
       }
 
@@ -98,7 +98,7 @@ Functions
   the previous set prefixes to filter through the request data.
 
   | \[WIP\] to main things that need a better solution. One is the cookie detection
-    and the other is the file handling. 
+    and the other is the file handling.
 
 **forms_valid()**
   This function checks if the special_form_valid has been implemented and if not
