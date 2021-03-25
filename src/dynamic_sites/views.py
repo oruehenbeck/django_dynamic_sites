@@ -59,6 +59,8 @@ class ContentView(PermissionRequiredMixin, DetailView):
             perms.append(perm.content_type.app_label + '.' + perm.codename)
         return perms
 
+    ## HANDELING REQUEST
+
     def get(self, request, *args, **kwargs):
         # checking if an empty editor(create new case) has been opened
         if 'editor' in self.kwargs['slug']:
@@ -106,15 +108,29 @@ class ContentView(PermissionRequiredMixin, DetailView):
         context['current_path'] = self.request.path[1:]
 
         # adding title #TODO change to display_title or remove, propably first option
-        context['title'] = self.object.url
+        context['title'] = self.object.display_title
+        
+        # userpage integration, replacing object in context as the site object is still in the context under context['site']
+        if 'user' in self.object.slug:
+            context['object'] = self.request.user
 
         # adding transfer_model specific data to the context
         if self.object.transfer_model:
             # checking filter is enabled on the model
-            if hasattr(self.model, 'get_filtered'): #Keeping until the filter topic is solved and @ that point it has propably be refittet to work
-                context['object_list'] = self.model.get_filtered(self.request.GET)
+            if hasattr(self.model, 'get_filteredd'): #Keeping until the filter topic is solved and @ that point it has propably be refittet to work
+                context['object_list'] = self.model.get_filtered(self.request.GET) #core problem is that for some fields the filterfield name has to be changed from minfoo to foo__gte and maxbar to bar__lte
+            elif 'user' in self.object.url:
+                if not hasattr(self.model, 'priv_objects'):
+                    raise NotImplementedError('Please implement a priv_objects manager for your model, if you want the private objects feature')
+                context['object_list'] = self.model.priv_objects.get_private(user=self.request.user)
             else:
-                context['object_list'] = self.model.objects.all()
+                if hasattr(self.model, 'priv_objects'):
+                    if not hasattr(self.model.priv_objects, 'get_public'):
+                        raise NotImplementedError('Please implement a get_public function on the priv_objects manager for your model, if you want to use the private objects feature')
+                    else:
+                        context['object_list'] = self.model.priv_objects.get_public()
+                else:
+                    context['object_list'] = self.model.objects.all()
 
             # assining links to vars, to only have one place where they are specified
             extensions = {}
@@ -186,16 +202,6 @@ class ContentFormView(PermissionRequiredMixin, SingleObjectMixin, TemplateRespon
         else:
             return self.forms_valid(forms)
 
-    def forms_valid(self, forms):
-        # Behavior if multiform is implemented
-        if not hasattr(self.model, 'special_form_valid'):
-            raise NotImplementedError('Please implement the special_form_valid function on your model.')
-
-        self.model.special_form_valid(forms)
-        ## flatten super() call
-        """If the form is valid, redirect to the supplied URL."""
-        return HttpResponseRedirect(self.get_success_url())
-
     ## GENERAL STUFF
 
     def get_success_url(self):
@@ -225,7 +231,7 @@ class ContentFormView(PermissionRequiredMixin, SingleObjectMixin, TemplateRespon
         context['current_path'] = re.sub('\d+\/', '', self.request.path[1:])[:-7]
 
         # adding the app frame which is to be extended from
-        context['frame'] = self.app_name + '/frame.html'
+        context['frame'] = self.app_name + '/page/frame.html'
 
         if not 'forms' in context:
             context['forms'] = self.get_forms()
@@ -251,7 +257,7 @@ class ContentFormView(PermissionRequiredMixin, SingleObjectMixin, TemplateRespon
         options = self.model.special_form()
         for idx, entry in enumerate(options):
             if isinstance(entry, str):
-                # get the right model via contenttypes and then instanciate a create form
+                # get the right model via contenttypes and then instantiate a create form
                 tmp = entry.split('/')
                 ct = ContentType.objects.get(app_label=tmp[0].lower(), model=tmp[1].lower())
                 model = ct.model_class()
@@ -309,6 +315,16 @@ class ContentFormView(PermissionRequiredMixin, SingleObjectMixin, TemplateRespon
             })
         return kwargs
 
+    def forms_valid(self, forms):
+        # Behavior if multiform is implemented
+        if not hasattr(self.model, 'special_form_valid'):
+            raise NotImplementedError('Please implement the special_form_valid function on your model.')
+
+        self.model.special_form_valid(forms)
+        ## flatten super() call
+        """If the form is valid, redirect to the supplied URL."""
+        return HttpResponseRedirect(self.get_success_url())
+
 
 #########################################################################################################
 ##################### SINGLEOBJECT VIEWS ################################################################
@@ -337,7 +353,7 @@ class ContentEditView(PermissionRequiredMixin, UpdateView):
         return perms
 
     def get_success_url(self):
-        return self.request.path
+        return '../..'
 
     def get_object(self, queryset=None):
         obj = super(ContentEditView, self).get_object(queryset)
@@ -391,7 +407,13 @@ class ContentEditView(PermissionRequiredMixin, UpdateView):
                 continue
             # 2. within the loop, find each m2m field and set
             if isinstance(field, ManyToManyField):
-                widgets[field.name] = FilteredSelectMultiple(field.verbose_name, is_stacked=False)
+                try:
+                    # until there is a proper solution this hack is to keep my personal project going
+                    from webserver.widgets import MultSelectBox
+                    widgets[field.name] = MultSelectBox(field.verbose_name, is_stacked=True)
+                except:
+                    widgets[field.name] = FilteredSelectMultiple(field.verbose_name, is_stacked=True)
+
             field_names.append(field.name)
 
         # 3. creating and returning the form
@@ -429,8 +451,9 @@ class ContentEditView(PermissionRequiredMixin, UpdateView):
 
         # the call to form.errors is nessecary to fill up cleaned_data so that it can be accessed
         # in the validate function
-        # does custom validation and adds errors to the form
-        form.instance.validate(request=self.request, form=form, errors=form.errors)
+        # does custom validation and adds errors to the form, can be omitted, do not recommend that though
+        if hasattr(form.instance, 'validate'):
+            form.instance.validate(request=self.request, form=form, errors=form.errors)
 
         if form.is_bound and not form.errors:
             self.object = obj
@@ -441,10 +464,19 @@ class ContentEditView(PermissionRequiredMixin, UpdateView):
 
     def form_valid(self, form):
         for field in form.instance._meta.fields:
+            # skipping over modelfields which have not been added to the edit form
             if not field.name in form.cleaned_data:
                 continue
+            # bleaching textfields to prevent injections
+            # may allow for using tinymce fields later, has not been tested yet
             if isinstance(field, TextField):
                 form.cleaned_data[field.name] = bleach.clean(form.cleaned_data[field.name])
+        
+        if hasattr(self.model, 'private'):
+            if 'user' in self.object.url:
+                form.instance.private = True
+            else:
+                form.instance.private = False
 
         return super(ContentEditView, self).form_valid(form)
 
@@ -486,7 +518,16 @@ class ContentDeleteView(PermissionRequiredMixin, DeleteView):
         # the site can still be found in the context['site']
         self.model = apps.get_model(obj.transfer_model.app_label, obj.transfer_model.model)
         self.app_name = obj.transfer_model.app_label
-        obj = self.model.objects.get(pk=self.kwargs['id'])
+
+        if hasattr(self.model, 'priv_objects'):
+            if 'user' in obj.url:  # obj is at this point still the site object / the page
+                transfer_model_queryset = self.model.priv_objects.get_private(user=self.request.user)
+            else:
+                transfer_model_queryset = self.model.priv_objects.get_public()
+        else:
+            transfer_model_queryset = self.model.objects.all()
+
+        obj = transfer_model_queryset.get(pk=self.kwargs['id'])
 
         return obj
 
@@ -496,16 +537,19 @@ class ContentDeleteView(PermissionRequiredMixin, DeleteView):
         # adding the chosen bg picture
         context['bg_pic'] = self.bg_pic
 
-        # adding genereal information to context
+        # adding general information to context
         context['current_path'] = self.request.path[1:]
 
         # adding the app frame which is to be extended from
-        context['frame'] = self.app_name + '/frame.html'
+        context['frame'] = self.app_name + '/page/frame.html'
 
         return context
 
     def get_queryset(self):
-        return self.model.objects.all()
+        # at this point self.model is still Site
+        parts = self.request.path.split('/')
+        parent_slug = parts[-4]
+        return self.model.objects.filter(parent__slug=parent_slug)
 
 
 class ContentDownloadView(PermissionRequiredMixin, SingleObjectMixin, WeasyTemplateView):
@@ -533,6 +577,9 @@ class ContentDownloadView(PermissionRequiredMixin, SingleObjectMixin, WeasyTempl
 
     ## HANDELING REQUEST
 
+    def get_success_url(self):
+        return '..'
+
     def get(self, request, *args, **kwargs):
         # if weasyprint wasnt installed error here instead of when server is started
         # allowing for full functionality of the rest if download is not used
@@ -541,9 +588,6 @@ class ContentDownloadView(PermissionRequiredMixin, SingleObjectMixin, WeasyTempl
 
         self.object = self.get_object()
         return super(ContentDownloadView, self).get(request, *args, **kwargs)
-
-    def get_success_url(self):
-        return '..'
 
     def get_object(self, queryset=None):
         obj = super(ContentDownloadView, self).get_object(queryset)
@@ -561,15 +605,35 @@ class ContentDownloadView(PermissionRequiredMixin, SingleObjectMixin, WeasyTempl
 
     def get_context_data(self, **kwargs):
         context = super(ContentDownloadView, self).get_context_data()
-        if self.kwargs['id'] == '0':
-            context['object_list'] = self.model.objects.all()
+
+        # checking if private-object feature has been activated
+        if hasattr(self.model, 'priv_objects'):
+            if 'user' in self.object.url:
+                tmp_queryset = self.model.priv_objects.get_private(user=self.request.user)
+            else:
+                tmp_queryset = self.model.priv_objects.get_public()
         else:
-            context['object_list'] = self.model.objects.filter(pk=self.kwargs['id'])
+            tmp_queryset = self.model.objects.all()
+
+        # case print all or a specific one
+        if self.kwargs['id'] == '0':
+            context['object_list'] = tmp_queryset
+        else:
+            context['object_list'] = tmp_queryset.filter(pk=self.kwargs['id'])  # using filter here instead of get so that the context still contains a queryset
             
         context['model'] = self.model._meta.verbose_name
         # adding the app frame which is to be extended from
-        context['frame'] = self.app_name + '/pdf/frame.html'
-        context['detail'] = "pdf/" + self.model._meta.model_name + ".html"
+        # assining links to vars, to only have one place where they are specified
+        extensions = {}
+        extensions['detail'] = "pdf/" + self.model._meta.model_name + ".html"
+        extensions['frame'] = self.app_name + '/pdf/frame.html'
+        # Probing if file exists and if so put it into the context
+        for i in extensions:
+            try:
+                loader.get_template(extensions[i])
+                context[i] = extensions[i]
+            except TemplateDoesNotExist:
+                pass
 
         return context
 

@@ -64,7 +64,7 @@ setup(
     project_urls={
         'Documentation': 'https://django-dynamic-sites.readthedocs.io/',
         'Changelog': 'https://django-dynamic-sites.readthedocs.io/en/latest/changelog.html',
-        'Issue Tracker': 'https://https://github.com/oruehenbeck/django_dynamic_sites/issues',
+        'Issue Tracker': 'https://github.com/oruehenbeck/django_dynamic_sites/issues',
     },
     keywords=[
         # eg: 'keyword1', 'keyword2', 'keyword3',
