@@ -64,8 +64,7 @@ one by one.
 	- Title == 'Editor': This page will be a ContentEditView.
 	- Title == 'Delete': This page will be a ContentDeleteView.
 	- Title == 'Download': This page will be a ContentDownloadView.
-	- Title contains 'user': This page will be a ContentView but with some special
-		features, more in the private objects reference (it takes far to long to explain it here)
+	- Title contains 'user': This page will be a ContentView but with some special features, more in the private objects reference (it takes far to long to explain it here)
 	- Everything else will be a normal ContentView.
 
 

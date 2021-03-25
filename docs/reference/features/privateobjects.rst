@@ -46,7 +46,6 @@ Add your newly created manager to your model as follows::
     .
 
     # Managers
-
     objects = models.Manager()
     priv_objects = Private_Objects_Manager()
 
@@ -62,9 +61,9 @@ user with :code:`{{ object }}`.
 Step 5:
 =======
 | In the admin menu:
+
   - Add the userpage template to your dynamic_sites templates
-  - Create a Site in your sitetree with 'user' in the title and your userpage template
-    and check the box saying 'logged in only'
+  - Create a Site in your sitetree with 'user' in the title and your userpage template and check the box saying 'logged in only'
 
 
 DONE!
@@ -74,5 +73,5 @@ transfer_model will automatically only show objects returned by the :code:`get_p
 manager function and if the sites are not hooked beneath the userpage they will
 show all objects returned by :code:`get_public()`.
 
-As you can expect this works for as many models as you register and extend the
+As you can expect, this works for as many models as you register and extend the
 shown way.
