@@ -2,11 +2,7 @@ Reference
 =========
 
 .. toctree::
-    :glob:
+    :maxdepth: 2
 
-    contentview*
-    contentformview*
-    contenteditview*
-    contentdeleteview*
-    contentdownloadview*
-    
+    views/index
+    features/index

@@ -1,0 +1,7 @@
+Features
+========
+
+.. toctree::
+  :glob:
+
+  privateobjects*

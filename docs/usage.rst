@@ -64,6 +64,8 @@ one by one.
 	- Title == 'Editor': This page will be a ContentEditView.
 	- Title == 'Delete': This page will be a ContentDeleteView.
 	- Title == 'Download': This page will be a ContentDownloadView.
+	- Title contains 'user': This page will be a ContentView but with some special
+		features, more in the private objects reference (it takes far to long to explain it here)
 	- Everything else will be a normal ContentView.
 
 
@@ -81,6 +83,7 @@ one by one.
 - *bg_pic*:
 	Here you can add a picture, if the chosen template supports a background picture
 	otherwise it will be ignored. Will be added to the context as bg_pic.
+	| !! so far this is not available as the app currently used for handling the pictures has not been released !!
 
 - *transfer_model*:
 	The juicy part of this project. Here you can select which of your registered

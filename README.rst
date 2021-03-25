@@ -13,6 +13,7 @@ TLDR:
 dynamic_sites in its core is a combination of a site model representing each page
 and a set of generic views which in conjunction with django-sitetree create a powerful
 and yet simple system to create and manage static pages and model dependent/displaying pages.
+| **dynamic_sites does not care at all about the models you use it with!**
 
 Long Answer:
 ============
